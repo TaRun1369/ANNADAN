@@ -43,23 +43,6 @@ class _CollectorState extends State<Collector> {
                   child: ListTile(
                     title: Text(documentSnapshot['name of provider']),
                     subtitle: Text(documentSnapshot['Food items'].toString()),
-                    trailing: SizedBox(
-                      width: 100,
-                      child: Row(
-                        children: [
-// Press this button to edit a single product
-//                           IconButton(
-//                               icon: const Icon(Icons.edit),
-//                               onPressed: () =>
-//                                   _update(documentSnapshot)),
-// // This icon button is used to delete a single product
-//                           IconButton(
-//                               icon: const Icon(Icons.delete),
-//                               onPressed: () =>
-//                                   _deleteProduct(documentSnapshot.id)),
-                        ],
-                      ),
-                    ),
                   ),
                 );
               },
