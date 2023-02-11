@@ -11,12 +11,15 @@ class Collector extends StatefulWidget {
 }
 
 class _CollectorState extends State<Collector> {
+
   final CollectionReference _items =
       FirebaseFirestore.instance.collection('Items');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(41, 255, 193, 7),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 255, 191, 0),
         title: const Text("Collector"),
         actions: [
           IconButton(
@@ -34,17 +37,19 @@ class _CollectorState extends State<Collector> {
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.hasData) {
             return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,  //number of rows
+              itemCount: streamSnapshot.data!.docs.length, //number of rows
               itemBuilder: (context, index) {
                 final DocumentSnapshot documentSnapshot =
                     streamSnapshot.data!.docs[index];
                 return Card(
-                  margin: const EdgeInsets.all(10),
-                  child: ListTile(
-                    title: Text(documentSnapshot['Name']),
-                    subtitle: Text(documentSnapshot['Food items'].toString()),
-                  ),
-                );
+                  color: Colors.amber,
+                    margin: const EdgeInsets.all(10),
+                    child: ListTile(
+                      title: Text(documentSnapshot['Name']),
+                      subtitle: Text(
+                          "${documentSnapshot['Food items'].toString()}, ${documentSnapshot['foodQuatity'].toString()}"),
+                      ),
+                    );
               },
             );
           }
