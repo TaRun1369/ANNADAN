@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
+import '../Screens/delProvider.dart';
 
 
 void main() {
@@ -33,7 +34,10 @@ class _AdminState extends State<Admin> {
                 children: [
                   InkWell(
                     onTap: (){
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DelProvider()),
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
