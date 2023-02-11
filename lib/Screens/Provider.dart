@@ -1,15 +1,13 @@
-import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_management/Screens/Login.dart';
 
-
-
 class Provider extends StatefulWidget {
-  late String email ;
+  late String email;
   Provider({super.key, required this.email});
-  
+
   @override
   State<Provider> createState() => _ProviderState();
 }
@@ -17,6 +15,11 @@ class Provider extends StatefulWidget {
 class _ProviderState extends State<Provider> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _fooditemController = TextEditingController();
+  final TextEditingController _LocationController = TextEditingController();
+  final TextEditingController _foodAgeController = TextEditingController();
+  final TextEditingController _foodQuantityController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
   final CollectionReference _items =
       FirebaseFirestore.instance.collection('Items');
   final CollectionReference _users =
@@ -40,7 +43,16 @@ class _ProviderState extends State<Provider> {
               children: [
                 TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
+                  decoration:
+                      const InputDecoration(labelText: 'Name of Provider'),
+                ),
+                TextField(
+                  controller: _LocationController,
+                  decoration: const InputDecoration(labelText: 'Location'),
+                ),
+                TextField(
+                  controller: _foodAgeController,
+                  decoration: const InputDecoration(labelText: 'Price of Food'),
                 ),
                 TextField(
                   keyboardType:
@@ -50,6 +62,20 @@ class _ProviderState extends State<Provider> {
                     labelText: 'fooditem',
                   ),
                 ),
+                // TextField(
+                //   controller: _emailController,
+                //   decoration: const InputDecoration(labelText: 'Price of Food'),
+
+                // ),
+                TextField(
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  controller: _foodQuantityController,
+                  decoration: const InputDecoration(
+                    labelText: 'Kilo Grams of Food',
+                  ),
+                ),
+
                 const SizedBox(
                   height: 20,
                 ),
@@ -58,9 +84,24 @@ class _ProviderState extends State<Provider> {
                   onPressed: () async {
                     final String name = _nameController.text;
                     final String fooditem = _fooditemController.text;
-                    await _items.add({"Name": name, "Food items": fooditem});
+                    final String location = _LocationController.text;
+                    final String foogAge = _foodAgeController.text;
+                    final String email = widget.email;
+                    final String foodQuantity = _foodQuantityController.text;
+                    await _items.add({
+                      "Name": name,
+                      "Food items": fooditem,
+                      "Location": location,
+                      "foodAge": foogAge,
+                      "emailId": email,
+                      "foodQuantity": foodQuantity
+                    });
                     _nameController.text = '';
                     _fooditemController.text = '';
+                    _foodAgeController.text = '';
+                    _foodQuantityController.text = '';
+                    _LocationController.text = '';
+                    _emailController.text = '';
                     Navigator.of(context).pop();
                   },
                 )
@@ -73,6 +114,11 @@ class _ProviderState extends State<Provider> {
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
     if (documentSnapshot != null) {
       _nameController.text = documentSnapshot['Name'];
+      _foodAgeController.text = documentSnapshot['foodAge'];
+      _emailController.text = documentSnapshot['emailId'];
+      _foodQuantityController.text = documentSnapshot['foodQuantity'];
+      _foodAgeController.text = documentSnapshot['foodAge'];
+      _LocationController.text = documentSnapshot['Location'];
       _fooditemController.text = documentSnapshot['Food items'].toString();
     }
 
@@ -92,14 +138,36 @@ class _ProviderState extends State<Provider> {
               children: [
                 TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
+                  decoration:
+                      const InputDecoration(labelText: 'Name of Provider'),
+                ),
+                TextField(
+                  controller: _LocationController,
+                  decoration: const InputDecoration(labelText: 'Location'),
+                ),
+                TextField(
+                  controller: _foodAgeController,
+                  decoration: const InputDecoration(labelText: 'Price of Food'),
                 ),
                 TextField(
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),
                   controller: _fooditemController,
                   decoration: const InputDecoration(
-                    labelText: 'Food item',
+                    labelText: 'fooditem',
+                  ),
+                ),
+                // TextField(
+                //   controller: _emailController,
+                //   decoration: const InputDecoration(labelText: 'Price of Food'),
+
+                // ),
+                TextField(
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  controller: _foodQuantityController,
+                  decoration: const InputDecoration(
+                    labelText: 'Kilo Grams of Food',
                   ),
                 ),
                 const SizedBox(
@@ -110,11 +178,24 @@ class _ProviderState extends State<Provider> {
                   onPressed: () async {
                     final String name = _nameController.text;
                     final String fooditem = _fooditemController.text;
-                    await _items
-                        .doc(documentSnapshot!.id)
-                        .update({"Name": name, "Food items": fooditem});
+                    final String location = _LocationController.text;
+                    final String foogAge = _foodAgeController.text;
+                    final String email = widget.email;
+                    final String foodQuantity = _foodQuantityController.text;
+                    await _items.doc(documentSnapshot!.id).update({
+                      "Name": name,
+                      "Food items": fooditem,
+                      "Location": location,
+                      "foodAge": foogAge,
+                      "emailId": email,
+                      "foodQuantity": foodQuantity
+                    });
                     _nameController.text = '';
                     _fooditemController.text = '';
+                    _foodAgeController.text = '';
+                    _foodQuantityController.text = '';
+                    _LocationController.text = '';
+                    _emailController.text = '';
                     Navigator.of(context).pop();
                   },
                 )
@@ -153,35 +234,37 @@ class _ProviderState extends State<Provider> {
         // stream: _items.snapshots(), //build connection
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.hasData) {
-            return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length, //number of rows
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index];
-                return Card(
-                  margin: const EdgeInsets.all(10),
-                  child: ListTile(
-                    title: Text(documentSnapshot['Name']),
-                    subtitle: Text(documentSnapshot['Food items'].toString()),
-                    trailing: SizedBox(
-                      width: 100,
-                      child: Row(
-                        children: [
-// Press this button to edit a single product
-                          IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () => _update(documentSnapshot)),
-// This icon button is used to delete a single product
-                          IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () => _delete(documentSnapshot.id)),
-                        ],
+            return Stack(children: [
+              // dalo ihar kuch
+              ListView.builder(
+                itemCount: streamSnapshot.data!.docs.length, //number of rows
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot =
+                      streamSnapshot.data!.docs[index];
+                  return Card(
+                    margin: const EdgeInsets.all(10),
+                    child: ListTile(
+                      title: Text(documentSnapshot['Name']),
+                      subtitle: Text(
+                          "${documentSnapshot['Food items'].toString()}, ${documentSnapshot['foodQuantity'].toString()}"),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () => _update(documentSnapshot)),
+                            IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () => _delete(documentSnapshot.id)),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
+                  );
+                },
+              ),
+            ]);
           }
 
           return const Center(
