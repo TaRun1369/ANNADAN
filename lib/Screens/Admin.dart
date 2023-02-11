@@ -3,15 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_management/Screens/Login.dart';
 
-class Admin extends StatefulWidget {
+class Admin1 extends StatefulWidget {
   late String email;
-  Admin({super.key,required this.email});
+  Admin1({super.key,required this.email});
 
   @override
-  State<Admin> createState() => _AdminState();
+  State<Admin1> createState() => _Admin1State();
 }
 
-class _AdminState extends State<Admin> {
+class _Admin1State extends State<Admin1> {
 
   final CollectionReference _items =
       FirebaseFirestore.instance.collection('Items');

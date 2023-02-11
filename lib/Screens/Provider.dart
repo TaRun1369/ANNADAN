@@ -94,8 +94,8 @@ class _ProviderState extends State<Provider> {
                       "Location": location,
                       "foodAge": foogAge,
                       "emailId": email,
-                      "foodQuantity": foodQuantity,
-                      "Requests":[]
+                      "Requests":[],
+                      "foodQuantity": foodQuantity
                     });
                     _nameController.text = '';
                     _fooditemController.text = '';
@@ -188,8 +188,8 @@ class _ProviderState extends State<Provider> {
                       "Location": location,
                       "foodAge": foogAge,
                       "emailId": email,
-                      "foodQuantity": foodQuantity,
                       "Requests" :[],
+                      "foodQuantity": foodQuantity
                     });
                     _nameController.text = '';
                     _fooditemController.text = '';
@@ -220,6 +220,7 @@ class _ProviderState extends State<Provider> {
         backgroundColor: Colors.transparent,
 
         title: const Text("Provider",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+        foregroundColor: Colors.amber,
         actions: [
           Row(
             children: [

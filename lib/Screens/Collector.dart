@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_management/Screens/Login.dart';
+import 'package:food_management/constants.dart';
+import 'package:food_management/elements/collector_card.dart';
 
 class Collector extends StatefulWidget {
   late String email;
@@ -60,22 +62,16 @@ class _CollectorState extends State<Collector> {
     return Scaffold(
       backgroundColor: Color.fromARGB(41, 255, 193, 7),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-
-        title: const Text("Collector",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+        backgroundColor: Color.fromARGB(255, 255, 191, 0),
+        title: const Text("Collector"),
         actions: [
-          Row(
-            children: [
-              Text("Logout",),
-              IconButton(
+          IconButton(
             onPressed: () {
               logout(context);
             },
             icon: const Icon(
               Icons.logout,
             ),
-          )
-            ],
           )
         ],
       ),
@@ -88,21 +84,33 @@ class _CollectorState extends State<Collector> {
               itemBuilder: (context, index) {
                 final DocumentSnapshot documentSnapshot =
                     streamSnapshot.data!.docs[index];
-                return Card(
-                  color: Colors.amber,
-                    margin: const EdgeInsets.all(10),
-                    child: ListTile(
-                      onTap: () => _bookdata(documentSnapshot),
-                      title: Text(documentSnapshot['Name']),
-                      subtitle: Text(
-                          """
-Food Item - ${documentSnapshot['Food items'].toString()} 
-Food Quantity - ${documentSnapshot['foodQuantity'].toString()}
-Location - ${documentSnapshot['Location'].toString()}
-Food Items - ${documentSnapshot['Food items'].toString()}"""
-              ),             
-                      ),
-                    );
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 400,
+                    height: 150,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Color(0xffF5EAEE), gradient: LinearGradient(
+                      colors: [Color(0xffF68989),Color(0xffC65D7B), Color(0xff874356)],
+                    ),),
+                    child: Column(
+                      children: [
+                        CollectorCard(field: 'Shop Name', value: documentSnapshot['Name']),
+                        CollectorCard(field: 'Food Items', value: documentSnapshot['Food items']),
+                        CollectorCard(field: 'Food Quantity', value: documentSnapshot['foodQuantity']),
+                      ],
+                    ),
+                  ),
+                );
+                // return Card(
+                //   color: Colors.amber,
+                //     margin: const EdgeInsets.all(10),
+                //     child: ListTile(
+                //       onTap: () => _bookdata(documentSnapshot),
+                //       title: Text(documentSnapshot['Name']),
+                //       subtitle: Text(
+                //           "${documentSnapshot['Food items'].toString()}, ${documentSnapshot['foodQuantity'].toString()}"),
+                //       ),
+                //     );
               },
             );
           }
