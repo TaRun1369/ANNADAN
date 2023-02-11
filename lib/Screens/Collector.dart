@@ -16,42 +16,59 @@ class Collector extends StatefulWidget {
 class _CollectorState extends State<Collector> {
 
   final CollectionReference _items =
-      FirebaseFirestore.instance.collection('Items');
+  FirebaseFirestore.instance.collection('Items');
 
   Future<void> _bookdata([DocumentSnapshot? documentSnapshot]) async {
 
-    
+
     await showModalBottomSheet(
+      backgroundColor: Colors.transparent,
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 20,
-                left: 20,
-                right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(documentSnapshot!['Name']),
-                Text(documentSnapshot['Food items']),
-                Text(documentSnapshot['Location']),
-                Text(documentSnapshot['foodAge'].toString()),
-                Text(documentSnapshot['foodQuantity'].toString()),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  child: const Text('Update'),
-                  onPressed: () async {
-                    await FirebaseFirestore.instance.collection('Items').doc(documentSnapshot.id).update({
-                          'Requests': FieldValue.arrayUnion([widget.email])
-                    });
-                  }
-                )
-              ],
+          return Container(
+            decoration: BoxDecoration(borderRadius:const  BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),color: Colors.amber[300],),
+
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("""
+Name - ${documentSnapshot!['UserName']},
+Shop Name - ${documentSnapshot['ShopName']},
+Food items - ${documentSnapshot['Food items']},
+Location - ${documentSnapshot['Location']},
+FoodAge - ${documentSnapshot['foodAge'].toString()},
+FoodQuantity - ${documentSnapshot['foodQuantity'].toString()}
+                  """,
+                  style: TextStyle(fontSize: 20),),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+
+                      child: const Text('Request Order'),
+                      onPressed: () async {
+                        await FirebaseFirestore.instance.collection('Items').doc(documentSnapshot.id).update({
+                          'Requests': FieldValue.arrayUnion([FirebaseAuth.instance.currentUser!.uid])
+                        });},
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.purple,
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                              textStyle: TextStyle(
+
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold)
+          ),
+          )
+
+                ],
+              ),
             ),
           );
         });
@@ -62,16 +79,21 @@ class _CollectorState extends State<Collector> {
     return Scaffold(
       backgroundColor: Color.fromARGB(41, 255, 193, 7),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 191, 0),
-        title: const Text("Collector"),
+        backgroundColor: Colors.transparent,
+        title: const Text("Collector",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
         actions: [
-          IconButton(
-            onPressed: () {
-              logout(context);
-            },
-            icon: const Icon(
-              Icons.logout,
-            ),
+          Row(
+            children: [
+              const Text("Logout",style: TextStyle(fontWeight: FontWeight.bold),),
+              IconButton(
+                onPressed: () {
+                  logout(context);
+                },
+                icon: const Icon(
+                  Icons.logout,
+                ),
+              ),
+            ],
           )
         ],
       ),
@@ -83,21 +105,29 @@ class _CollectorState extends State<Collector> {
               itemCount: streamSnapshot.data!.docs.length, //number of rows
               itemBuilder: (context, index) {
                 final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: 400,
-                    height: 150,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Color(0xffF5EAEE), gradient: LinearGradient(
-                      colors: [Color(0xffF68989),Color(0xffC65D7B), Color(0xff874356)],
-                    ),),
-                    child: Column(
-                      children: [
-                        CollectorCard(field: 'Shop Name', value: documentSnapshot['Name']),
-                        CollectorCard(field: 'Food Items', value: documentSnapshot['Food items']),
-                        CollectorCard(field: 'Food Quantity', value: documentSnapshot['foodQuantity']),
-                      ],
+                streamSnapshot.data!.docs[index];
+                return InkWell(
+                  borderRadius: BorderRadius.circular(45),
+                  onTap: () => _bookdata(documentSnapshot),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 400,
+                      height: 240,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Color(0xffF5EAEE), gradient: LinearGradient(
+                        colors: [Color(0xffF68989),Color(0xffC65D7B), Color(0xff874356)],
+                      ),),
+                      child: Column(
+                        children: [
+                          CollectorCard(field: 'UserName', value: documentSnapshot['UserName']),
+                          CollectorCard(field: 'Shop Name', value: documentSnapshot['ShopName']),
+                          CollectorCard(field: 'Address', value: documentSnapshot['Location']),
+                          CollectorCard(field: 'Food Items', value: documentSnapshot['Food items']),
+                          CollectorCard(field: 'Food Quantity', value: documentSnapshot['foodQuantity']),
+                          CollectorCard(field: 'Food Age', value: documentSnapshot['foodAge'].toString()),
+                        ],
+
+                      ),
                     ),
                   ),
                 );

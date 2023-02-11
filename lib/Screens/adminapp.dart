@@ -1,13 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_management/Screens/delCollector.dart';
 import 'package:food_management/Screens/showAvailableItems.dart';
 import 'package:panorama/panorama.dart';
 import '../Screens/delProvider.dart';
-
-
-void main() {
-  runApp(const Admin());
-}
+import 'Login.dart';
 
 class Admin extends StatefulWidget {
   const Admin({Key? key}) : super(key: key);
@@ -19,104 +16,99 @@ class Admin extends StatefulWidget {
 class _AdminState extends State<Admin> {
   @override
   Widget build(BuildContext context) {
-    final SensorControl sensorControl = SensorControl.AbsoluteOrientation;
-    return MaterialApp(
-      home: Stack(
-          children:[
-            Panorama(
-              animSpeed: 0.5,
-              sensorControl: SensorControl.Orientation,
-              child: Image.asset('images/123.jpeg', fit: BoxFit.cover),
-            ),
-            Scaffold(
-
-              appBar: AppBar(title: Text("Admin Portal"),
-                backgroundColor: Colors.cyan,),
-              body: ListView(
-                children: [
-                  InkWell(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DelProvider()),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.greenAccent,
-                        ),
-                        height: 100,
-                        child: Center(child: Text("delete collector")),
-
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap:(){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DelCollector()),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.amberAccent,
-                        ),
-                        height: 100,
-                        child: Center(child: Text("delete provider")),
-
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap:(){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => showAvailableItems()),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.redAccent,
-                        ),
-                        height: 100,
-                        child: Center(child: Text("show items available")),
-
-
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: (){
-
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.indigo,
-                        ),
-                        height: 100,
-                        child: Center(child: Text("items edit")),
-
-                      ),
-                    ),
-                  ),
-                ],
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(41, 255, 193, 7),
+      appBar: AppBar(
+        title: Text("Admin Portal"),
+        actions: [
+          Row(
+            children: [
+              const Text("Logout",style: TextStyle(fontWeight: FontWeight.bold),),
+              IconButton(
+                onPressed: () {
+                  logout(context);
+                },
+                icon: const Icon(
+                  Icons.logout,
+                ),
+              ),
+            ],
+          )
+        ],
+        backgroundColor: Colors.transparent,
+      ),
+      body: ListView(
+        children: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DelProvider()),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.greenAccent,
+                ),
+                height: 140,
+                child: Center(child: Text("delete Provider",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),)),
               ),
             ),
-          ]
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DelCollector()),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.amberAccent,
+                ),
+                height: 140,
+                child: Center(child: Text("delete collector",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold))),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => showAvailableItems()),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.redAccent,
+                ),
+                height: 140,
+                child: Center(child: Text("Items Management",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold))),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+ Future<void> logout(BuildContext context) async {
+    const CircularProgressIndicator();
+    await FirebaseAuth.instance.signOut();
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(),
+      ),
+    );
+  }

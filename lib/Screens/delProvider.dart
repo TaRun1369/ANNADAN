@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 
 
@@ -19,6 +20,11 @@ class _DelProviderState extends State<DelProvider> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black87,
+      appBar: AppBar(
+        title: const Text("Delete Providers"),
+        backgroundColor: Colors.transparent,
+      ),
         body: Container(
             color: Color.fromARGB(41, 255, 193, 7),
             child: StreamBuilder(

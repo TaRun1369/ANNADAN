@@ -1,7 +1,11 @@
+// import 'dart:html';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_management/Screens/Register.dart';
+import 'package:food_management/Screens/adminapp.dart';
+import 'package:food_management/constants.dart';
 import 'Collector.dart';
 import 'package:panorama/panorama.dart';
 import 'Provider.dart';
@@ -13,6 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isObscure3 = true;
+  bool _isValid = false;
   bool visible = false;
   final _formkey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
@@ -172,14 +177,14 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Visibility(
+                            _isValid ? Visibility(
                                 maintainSize: true,
                                 maintainAnimation: true,
                                 maintainState: true,
                                 visible: visible,
                                 child: const CircularProgressIndicator(
                                   color: Colors.white,
-                                )),
+                                )) : Text(''),
                           ],
                         ),
                       ),
@@ -245,12 +250,23 @@ class _LoginPageState extends State<LoginPage> {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        if (documentSnapshot.get('rool') == "Provider") {
+        if(documentSnapshot.get('rool') == "admin"){
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Admin(),
+            ),
+          );
+        }else if (documentSnapshot.get('rool') == "Provider") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => Provider(
                 email: emailController.text,
+                address: documentSnapshot.get('address'),
+                mobile: documentSnapshot.get('Mobile'),
+                shopname: documentSnapshot.get('shopname'),
+                username: documentSnapshot.get('username'),
               ),
             ),
           );
@@ -276,12 +292,24 @@ class _LoginPageState extends State<LoginPage> {
           email: email,
           password: password,
         );
+        setState(() {
+          _isValid = true;
+        });
         route();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          print('No user found for that email.');
+          setState(() {
+            passwordController.clear();
+            emailController.clear();
+            _isValid = false;
+          });
+          showSnackBar('The user is not registered', context);
         } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
+          setState(() {
+            passwordController.clear();
+            _isValid = false;
+          });
+          showSnackBar('Wrong password provided for that user.', context);
         }
       }
     }
