@@ -90,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 20,
                         ),
                         TextFormField(
+                          autocorrect: false,
                           controller: passwordController,
                           obscureText: _isObscure3,
                           decoration: InputDecoration(
