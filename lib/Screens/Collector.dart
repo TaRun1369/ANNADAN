@@ -60,16 +60,22 @@ class _CollectorState extends State<Collector> {
     return Scaffold(
       backgroundColor: Color.fromARGB(41, 255, 193, 7),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 191, 0),
-        title: const Text("Collector"),
+        backgroundColor: Colors.transparent,
+
+        title: const Text("Collector",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
         actions: [
-          IconButton(
+          Row(
+            children: [
+              Text("Logout",),
+              IconButton(
             onPressed: () {
               logout(context);
             },
             icon: const Icon(
               Icons.logout,
             ),
+          )
+            ],
           )
         ],
       ),
@@ -89,7 +95,12 @@ class _CollectorState extends State<Collector> {
                       onTap: () => _bookdata(documentSnapshot),
                       title: Text(documentSnapshot['Name']),
                       subtitle: Text(
-                          "${documentSnapshot['Food items'].toString()}, ${documentSnapshot['foodQuantity'].toString()}"),
+                          """
+Food Item - ${documentSnapshot['Food items'].toString()} 
+Food Quantity - ${documentSnapshot['foodQuantity'].toString()}
+Location - ${documentSnapshot['Location'].toString()}
+Food Items - ${documentSnapshot['Food items'].toString()}"""
+              ),             
                       ),
                     );
               },

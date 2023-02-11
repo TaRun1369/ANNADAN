@@ -217,16 +217,22 @@ class _ProviderState extends State<Provider> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.amber,
-        title: Text(widget.email),
+        backgroundColor: Colors.transparent,
+
+        title: const Text("Provider",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
         actions: [
-          IconButton(
+          Row(
+            children: [
+              Text("Logout",),
+              IconButton(
             onPressed: () {
               logout(context);
             },
             icon: const Icon(
               Icons.logout,
             ),
+          )
+            ],
           )
         ],
       ),
@@ -247,7 +253,12 @@ class _ProviderState extends State<Provider> {
                     child: ListTile(
                       title: Text(documentSnapshot['Name']),
                       subtitle: Text(
-                          "${documentSnapshot['Food items'].toString()}, ${documentSnapshot['foodQuantity'].toString()}"),
+                          """
+Food Item - ${documentSnapshot['Food items'].toString()} 
+Food Quantity - ${documentSnapshot['foodQuantity'].toString()}
+Location - ${documentSnapshot['Location'].toString()}
+Food Items - ${documentSnapshot['Food items'].toString()}"""
+              ),             
                       trailing: SizedBox(
                         width: 100,
                         child: Row(

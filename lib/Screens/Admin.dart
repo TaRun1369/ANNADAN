@@ -21,16 +21,22 @@ class _AdminState extends State<Admin> {
     return Scaffold(
       backgroundColor: Color.fromARGB(41, 255, 193, 7),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 191, 0),
-        title: const Text("Admin"),
+        backgroundColor: Colors.transparent,
+
+        title: const Text("Admin",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
         actions: [
-          IconButton(
+          Row(
+            children: [
+              Text("Logout",),
+              IconButton(
             onPressed: () {
               logout(context);
             },
             icon: const Icon(
               Icons.logout,
             ),
+          )
+            ],
           )
         ],
       ),
@@ -48,10 +54,15 @@ class _AdminState extends State<Admin> {
                     margin: const EdgeInsets.all(10),
                     child: ListTile(
 
-                      title: Text(documentSnapshot['Name']),
-                      subtitle: Text(
-                          "${documentSnapshot['Food items'].toString()}, ${documentSnapshot['foodQuantity'].toString()}"),
-                      ),
+                      title: Text(documentSnapshot['Name'],style: const TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                       subtitle: Text(
+                          """
+Food Item - ${documentSnapshot['Food items'].toString()} 
+Food Quantity - ${documentSnapshot['foodQuantity'].toString()}
+Location - ${documentSnapshot['Location'].toString()}
+Food Items - ${documentSnapshot['Food items'].toString()}"""
+              ),                      
+              ),
                     );
               },
             );
