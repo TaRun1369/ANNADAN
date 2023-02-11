@@ -51,12 +51,12 @@ class _ProviderState extends State<Provider> {
                   decoration: const InputDecoration(labelText: 'Location'),
                 ),
                 TextField(
-                  controller: _foodAgeController,
-                  decoration: const InputDecoration(labelText: 'Price of Food'),
-                ),
-                TextField(
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),
+                  controller: _foodAgeController,
+                  decoration: const InputDecoration(labelText: 'Age of Food'),
+                ),
+                TextField(
                   controller: _fooditemController,
                   decoration: const InputDecoration(
                     labelText: 'fooditem',
@@ -146,12 +146,12 @@ class _ProviderState extends State<Provider> {
                   decoration: const InputDecoration(labelText: 'Location'),
                 ),
                 TextField(
-                  controller: _foodAgeController,
-                  decoration: const InputDecoration(labelText: 'Price of Food'),
-                ),
-                TextField(
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),
+                  controller: _foodAgeController,
+                  decoration: const InputDecoration(labelText: 'Age of Food'),
+                ),
+                TextField(
                   controller: _fooditemController,
                   decoration: const InputDecoration(
                     labelText: 'fooditem',
