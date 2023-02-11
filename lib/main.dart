@@ -10,20 +10,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: FutureBuilder(
-        // Initialize FlutterFire
         future: Firebase.initializeApp(),
         builder: (context, snapshot) {
-          // Check for errors
           if (snapshot.hasError) {
-            return const Text("fucked up");
+            return const Text("messed it bro sed");
           }
-    
-          // Once complete, show your application
           if (snapshot.connectionState == ConnectionState.done) {
             return LoginPage();
           }
-    
-          // Otherwise, show something whilst waiting for initialization to complete
           return const CircularProgressIndicator();
         },
       ),

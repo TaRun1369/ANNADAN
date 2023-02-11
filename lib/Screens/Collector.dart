@@ -41,7 +41,7 @@ class _CollectorState extends State<Collector> {
                 return Card(
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    title: Text(documentSnapshot['name of provider']),
+                    title: Text(documentSnapshot['Name']),
                     subtitle: Text(documentSnapshot['Food items'].toString()),
                   ),
                 );
