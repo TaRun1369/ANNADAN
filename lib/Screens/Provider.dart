@@ -94,7 +94,8 @@ class _ProviderState extends State<Provider> {
                       "Location": location,
                       "foodAge": foogAge,
                       "emailId": email,
-                      "foodQuantity": foodQuantity
+                      "foodQuantity": foodQuantity,
+                      "Requests":[]
                     });
                     _nameController.text = '';
                     _fooditemController.text = '';
@@ -117,7 +118,6 @@ class _ProviderState extends State<Provider> {
       _foodAgeController.text = documentSnapshot['foodAge'];
       _emailController.text = documentSnapshot['emailId'];
       _foodQuantityController.text = documentSnapshot['foodQuantity'];
-      _foodAgeController.text = documentSnapshot['foodAge'];
       _LocationController.text = documentSnapshot['Location'];
       _fooditemController.text = documentSnapshot['Food items'].toString();
     }
@@ -188,7 +188,8 @@ class _ProviderState extends State<Provider> {
                       "Location": location,
                       "foodAge": foogAge,
                       "emailId": email,
-                      "foodQuantity": foodQuantity
+                      "foodQuantity": foodQuantity,
+                      "Requests" :[],
                     });
                     _nameController.text = '';
                     _fooditemController.text = '';

@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_management/Screens/Login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Collector extends StatefulWidget {
-  const Collector({super.key});
+  late String email;
+  Collector({super.key,required this.email});
 
   @override
   State<Collector> createState() => _CollectorState();
@@ -14,6 +16,46 @@ class _CollectorState extends State<Collector> {
 
   final CollectionReference _items =
       FirebaseFirestore.instance.collection('Items');
+
+  Future<void> _bookdata([DocumentSnapshot? documentSnapshot]) async {
+
+    
+    await showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext ctx) {
+          return Padding(
+            padding: EdgeInsets.only(
+                top: 20,
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(documentSnapshot!['Name']),
+                Text(documentSnapshot['Food items']),
+                Text(documentSnapshot['Location']),
+                Text(documentSnapshot['foodAge'].toString()),
+                Text(documentSnapshot['foodQuantity'].toString()),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  child: const Text('Update'),
+                  onPressed: () async {
+                    await FirebaseFirestore.instance.collection('Items').doc(documentSnapshot.id).update({
+                          'Requests': FieldValue.arrayUnion([widget.email])
+                    });
+                  }
+                )
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,9 +87,10 @@ class _CollectorState extends State<Collector> {
                   color: Colors.amber,
                     margin: const EdgeInsets.all(10),
                     child: ListTile(
+                      onTap: () => _bookdata(documentSnapshot),
                       title: Text(documentSnapshot['Name']),
                       subtitle: Text(
-                          "${documentSnapshot['Food items'].toString()}, ${documentSnapshot['foodQuatity'].toString()}"),
+                          "${documentSnapshot['Food items'].toString()}, ${documentSnapshot['foodQuantity'].toString()}"),
                       ),
                     );
               },
