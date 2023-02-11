@@ -5,8 +5,6 @@ import 'package:food_management/Screens/Register.dart';
 import 'Collector.dart';
 import 'Provider.dart';
 
-
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -135,7 +133,6 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           keyboardType: TextInputType.emailAddress,
                         ),
-                       
                         const SizedBox(
                           height: 20,
                         ),
@@ -229,25 +226,27 @@ class _LoginPageState extends State<LoginPage> {
   void route() {
     User? user = FirebaseAuth.instance.currentUser;
     var kk = FirebaseFirestore.instance
-            .collection('users')
-            .doc(user!.uid)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
+        .collection('users')
+        .doc(user!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         if (documentSnapshot.get('rool') == "Provider") {
-           Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>  const Provider(),
-          ),
-        );
-        }else{
           Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>  const Collector(),
-          ),
-        );
+            context,
+            MaterialPageRoute(
+              builder: (context) => Provider(
+                email: emailController.text,
+              ),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Collector(),
+            ),
+          );
         }
       } else {
         print('Document does not exist on the database');
