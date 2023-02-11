@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food_management/Screens/Admin.dart';
 import 'package:food_management/Screens/Register.dart';
 import 'Collector.dart';
 import 'Provider.dart';
@@ -232,7 +233,16 @@ class _LoginPageState extends State<LoginPage> {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        if (documentSnapshot.get('rool') == "Provider") {
+        if(documentSnapshot.get('rool') == "admin"){
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Admin(
+                email: emailController.text,
+              ),
+            ),
+          );
+        }else if (documentSnapshot.get('rool') == "Provider") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

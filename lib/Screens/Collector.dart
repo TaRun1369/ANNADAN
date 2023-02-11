@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_management/Screens/Login.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Collector extends StatefulWidget {
   late String email;
