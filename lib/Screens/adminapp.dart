@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_management/Screens/delCollector.dart';
+import 'package:food_management/Screens/showAvailableItems.dart';
 import 'package:panorama/panorama.dart';
 import '../Screens/delProvider.dart';
 
@@ -54,7 +56,10 @@ class _AdminState extends State<Admin> {
                   ),
                   InkWell(
                     onTap:(){
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DelCollector()),
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -70,7 +75,12 @@ class _AdminState extends State<Admin> {
                     ),
                   ),
                   InkWell(
-                    onTap:(){},
+                    onTap:(){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => showAvailableItems()),
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(

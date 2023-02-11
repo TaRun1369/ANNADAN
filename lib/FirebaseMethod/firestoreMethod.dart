@@ -13,6 +13,22 @@ class FireStoreMethods {
     }
   }
 
+  Future<void> removeProvider(String uid) async {
+    try{
+      _firebaseFirestore.collection('users').doc(uid).delete();
+    }catch(err){
+      print(err.toString());
+    }
+  }
+
+  Future<void> removeCollector(String uid) async {
+    try{
+      _firebaseFirestore.collection('users').doc(uid).delete();
+    }catch(err){
+      print(err.toString());
+    }
+  }
+
   Future<void> addEntry(String foodItem, String location, String shopName,
       double price, String emailId, int foodAge, int foodQuantity) async {
     try {

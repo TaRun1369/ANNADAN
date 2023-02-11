@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 
 
 import 'package:food_management/FirebaseMethod/adminFirestoreMethods.dart';
-
-
+import '../FirebaseMethod/firestoreMethod.dart';
 import '../Screens/adminapp.dart';
 
 class DelProvider extends StatefulWidget {
@@ -22,11 +21,11 @@ class _DelProviderState extends State<DelProvider> {
     return Scaffold(
         body: Container(
             color: Color.fromARGB(41, 255, 193, 7),
-            child: FutureBuilder(
-              future: FirebaseFirestore.instance
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
                   .collection('users')
                   .where('rool', isEqualTo: 'Provider')
-                  .get(),
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -47,7 +46,7 @@ class _DelProviderState extends State<DelProvider> {
                               Text(snap['email']),
                               IconButton(
                                   onPressed: () async {
-                                    await FireStoreMethods().removeProvider(snap['uid']);
+                                    await FireStoreMethods().removeProvider(snap.id);
                                   }, icon: Icon(Icons.delete))
                             ],
                           ),
