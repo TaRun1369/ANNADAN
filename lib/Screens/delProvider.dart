@@ -1,12 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
+
+import 'package:food_management/FirebaseMethod/adminFirestoreMethods.dart';
+
+
 import '../Screens/adminapp.dart';
-
-
-void main() {
-  runApp(const DelProvider());
-}
 
 class DelProvider extends StatefulWidget {
   const DelProvider({Key? key}) : super(key: key);
@@ -19,14 +20,41 @@ class _DelProviderState extends State<DelProvider> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          Container(
-            color: Colors.black,
-            child: Text("Email"),
-          ),
-        ],
-      ),
-    );
+        body: Container(
+            color: Color.fromARGB(41, 255, 193, 7),
+            child: FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('users')
+                  .where('rool', isEqualTo: 'Provider')
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return ListView.builder(
+                      itemCount: (snapshot.data! as dynamic).docs.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot snap =
+                        (snapshot.data! as dynamic).docs[index];
+                        return Card(
+                          color: Colors.amber,
+                          margin: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(snap['email']),
+                              IconButton(
+                                  onPressed: () async {
+                                    await FireStoreMethods().removeProvider(snap['uid']);
+                                  }, icon: Icon(Icons.delete))
+                            ],
+                          ),
+                        );
+                      });
+                }
+              },
+            )));
   }
 }
