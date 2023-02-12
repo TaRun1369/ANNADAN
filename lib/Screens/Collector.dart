@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_upi_payment/easy_upi_payment.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_management/Screens/Login.dart';
@@ -50,22 +51,48 @@ FoodQuantity - ${documentSnapshot['foodQuantity'].toString()}
                   SizedBox(
                     height: 20,
                   ),
-                  ElevatedButton(
+                  Row(
+                    children: [
+                      ElevatedButton(
 
-                      child: const Text('Request Order'),
-                      onPressed: () async {
-                        await FirebaseFirestore.instance.collection('Items').doc(documentSnapshot.id).update({
-                          'Requests': FieldValue.arrayUnion([FirebaseAuth.instance.currentUser!.uid])
-                        });},
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.purple,
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                              textStyle: TextStyle(
+                          child: const Text('Request Order'),
+                          onPressed: () async {
+                            await FirebaseFirestore.instance.collection('Items').doc(documentSnapshot.id).update({
+                              'Requests': FieldValue.arrayUnion([widget.email])
+                            });},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.purple,
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                  textStyle: TextStyle(
 
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold)
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)
           ),
-          )
+          ),
+          ElevatedButton(
+                      
+                          child: const Text('Donate'),
+                          onPressed: () async {
+                            await EasyUpiPaymentPlatform.instance.startPayment(
+                                const EasyUpiPaymentModel(
+                                    payeeVpa: 'sunay.bhoyar@oksbi',
+                                    payeeName: 'Sunay Bhoyar',
+                                    amount: 10.0,
+                                    description: 'Testing payment',
+                                  ),
+                                );
+                            },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.purple,
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                  textStyle: TextStyle(
+
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)
+          ),
+          ),
+                    ],
+                  )
 
                 ],
               ),
