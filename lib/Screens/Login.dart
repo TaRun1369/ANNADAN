@@ -7,7 +7,7 @@ import 'package:food_management/Screens/Register.dart';
 import 'package:food_management/Screens/adminapp.dart';
 import 'package:food_management/constants.dart';
 import 'Collector.dart';
-import 'package:panorama/panorama.dart';
+// import 'package:panorama/panorama.dart';
 import 'Provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,16 +26,16 @@ class _LoginPageState extends State<LoginPage> {
   final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    final SensorControl sensorControl = SensorControl.AbsoluteOrientation;
+    // final SensorControl sensorControl = SensorControl.AbsoluteOrientation;
     return Stack(
       children:[
-        Panorama(
-          animSpeed: 0.5,
-          sensorControl: SensorControl.Orientation,
-          child: Image.asset('lib/images/123.jpeg', fit: BoxFit.cover),
-        ),
+        // Panorama(
+        //   animSpeed: 0.5,
+        //   sensorControl: SensorControl.Orientation,
+        //   child: Image.asset('lib/images/123.jpeg', fit: BoxFit.cover),
+        // ),
         Scaffold(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.yellow,
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
